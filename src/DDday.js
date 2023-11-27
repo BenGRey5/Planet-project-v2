@@ -1,20 +1,11 @@
 export class DDday {
-    constructor(
-        age, future, past
-        // planet1 = 'Earth',
-        // planet2 = 'Mars',
-        // planet3 = 'Venus',
-        // planet4 = 'Jupiter',
-        // planet5 = 'Mercury'
-    ) {
-        this.age = age
-        this.future = future
-        this.past = past
-        // this.planet1 = planet1;
-        // this.planet2 = planet2;
-        // this.planet3 = planet3;
-        // this.planet4 = planet4;
-        // this.planet5 = planet5;
+    constructor(age, future, past) {
+        if (isNaN(age) || isNaN(future) || isNaN(past)) {
+            throw new Error("Invalid input. Please enter numeric values for age, future, and past.");
+        }
+        this.age = age;
+        this.future = future;
+        this.past = past;
     }
     mercuryAge() {
         return this.age / 0.24
