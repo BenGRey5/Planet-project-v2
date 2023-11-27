@@ -1,61 +1,58 @@
 import "bootstrap";
-import "../node_modules/bootstrap/min.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/styles.css";
 import { DDday } from "../src/DDday.js";
+
+// Move the event listener outside the function
+window.addEventListener("load", function () {
+  document.querySelector("#AgeFinder").addEventListener("submit", handleAgeFinderForm);
+});
 
 function handleAgeFinderForm(event) {
   event.preventDefault();
-  document.querySelector("#result").innerText = null; // Fix ID here
+  document.querySelector("#result").innerText = null;
+
   const Age1 = parseInt(document.querySelector("#Age1").value);
   const Past1 = parseInt(document.querySelector("#Past1").value);
   const Future1 = parseInt(document.querySelector("#Future1").value);
   const planetList = document.querySelector("#planetList").value;
 
-  // Get the selected planet value
   let calculatedAge;
 
-  if (document.querySelector('input[name="Time"]:checked')) {
-    const selectedTime = document.querySelector('input[name="Time]:checked').value;
+  const selectedTime = document.querySelector('input[name="Time"]:checked');
 
-    if (selectedTime === 'past') {
-      calculatedAge = new DDday(Age1, null, Past1);
-      let result;
-      switch (planetList) {
-        case 'planet1':
-          result = calculatedAge.mercuryFuture();
-          break;
-        case 'planet2':
-          result = calculatedAge.venusFuture();
-          break;
-        case 'planet3':
-          result = calculatedAge.marsFuture();
-          break;
-        case 'planet4':
-          result = calculatedAge.jupiterFuture();
-          break;
-        default:
-          result = 'Invalid planet selection';
-      }
+  if (selectedTime) {
+    const timeValue = selectedTime.value;
+
+    if (timeValue === 'past') {
+      calculatedAge = new DDday(Age1, 0, Past1);
+    } else if (timeValue === 'future') {
+      calculatedAge = new DDday(Age1, Future1, 0);
     }
-  } else if (selectedTime === 'future') {
-    calculatedAge = new DDday(Age1, Future1, null);
+
     let result;
+
     switch (planetList) {
-      case 'planet1':
-        result = calculatedAge.mercuryPast();
+      case 'Mercury':
+        result = calculatedAge ? calculatedAge.mercuryAll() : 'Calculated age is undefined';
         break;
-      case 'planet2':
-        result = calculatedAge.venusPast();
+      case 'Venus':
+        result = calculatedAge ? calculatedAge.venusAll() : 'Calculated age is undefined';
         break;
-      case 'planet3':
-        result = calculatedAge.marsPast();
+      case 'Mars':
+        result = calculatedAge ? calculatedAge.marsAll() : 'Calculated age is undefined';
         break;
-      case 'planet4':
-        result = calculatedAge.jupiterPast();
+      case 'Jupiter':
+        result = calculatedAge ? calculatedAge.jupiterAll() : 'Calculated age is undefined';
         break;
       default:
         result = 'Invalid planet selection';
     }
+
+    // Display the result
+    document.querySelector("#result").innerText = `Your age on ${planetList}: ${result}`;
   }
+}
 
 
 
